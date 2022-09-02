@@ -1,18 +1,18 @@
-package entitie;
+package entities;
 
 import java.util.Date;
 
 public class Installment {
-	private Date date;
+	private Date dueDate;
 	private double price;
 
 	public Installment(Date date, double price) {
-		this.date = date;
+		this.dueDate = date;
 		this.price = price;
 	}
 
 	public Date getDate() {
-		return date;
+		return dueDate;
 	}
 
 	public double getPrice() {
@@ -21,6 +21,6 @@ public class Installment {
 
 	@Override
 	public String toString() {
-		return date.toString() + " - U$" + String.format("%.2f", price);
+		return dueDate.toString() + " - U$" + String.format("%.2f", price);
 	}
 }

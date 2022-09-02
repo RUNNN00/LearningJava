@@ -6,12 +6,14 @@ import java.text.SimpleDateFormat;
 import java.util.Scanner;
 import java.util.TimeZone;
 
-import entitie.Contract;
+import entities.Contract;
+import service.ContractService;
 import service.PaypalPaymentService;
 
 public class Program {
 
 	public static void main(String[] args) throws ParseException {
+		
 		Scanner scanner = new Scanner(System.in);
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GTC")); // UTC pattern
@@ -28,8 +30,10 @@ public class Program {
 		System.out.print("Enter number of installments: ");
 		int numInstall = scanner.nextInt();
 		
-		Contract contract = new Contract(number, value, numInstall, date, new PaypalPaymentService());
-		contract.generateInstallments();
+		Contract contract = new Contract(number, value, date);
+		ContractService contracService = new ContractService(new PaypalPaymentService());
+		contracService.processContract(contract, numInstall);
 		System.out.println(contract.toString());
+		scanner.close();
 	}
 }

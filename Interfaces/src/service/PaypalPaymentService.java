@@ -2,11 +2,14 @@ package service;
 
 public class PaypalPaymentService implements IPaymentService {
 
-	private final double INTEREST_MONTHLY = 0.01;
-	private final double FEE = 0.02;
+	private static final double INTEREST = 0.01;
+	private static final double PAYMENT_FEE = 0.02;
 
-	public double calculate(double value, int index) {
-		double aux = value + (value * INTEREST_MONTHLY) * index;
-		return aux + (aux * FEE);
+	public double interest(double amount, int months) {
+		return amount * INTEREST * months;
+	}
+
+	public double paymentFee(double amount) {
+		return amount * PAYMENT_FEE;
 	}
 }

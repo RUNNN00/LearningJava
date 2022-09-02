@@ -2,5 +2,7 @@ package service;
 
 public interface IPaymentService {
 
-	public double calculate(double value, int index);
+	public double interest(double amount, int months);
+	
+	public double paymentFee(double amount);
 }
