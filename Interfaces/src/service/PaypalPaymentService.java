@@ -6,7 +6,7 @@ public class PaypalPaymentService implements IPaymentService {
 	private final double FEE = 0.02;
 
 	public double calculate(double value, int index) {
-		double aux = value * INTEREST_MONTHLY * index;
+		double aux = value + (value * INTEREST_MONTHLY) * index;
 		return aux + (aux * FEE);
 	}
 }

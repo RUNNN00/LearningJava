@@ -1,6 +1,6 @@
 package entitie;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +15,11 @@ public class Contract {
 	private IPaymentService paymentService;
 	private List<Installment> installments;
 	
-	public Contract(int number, double value, int numberInstallment, IPaymentService paymentService) {
+	public Contract(int number, double value, int numberInstallment, Date dateIn, IPaymentService paymentService) {
 		this.number = number;
 		this.value = value;
 		this.numberInstallment = numberInstallment;
+		this.dateIn = dateIn;
 		this.paymentService = paymentService;
 		installments = new ArrayList<Installment>();
 	}
@@ -43,13 +44,23 @@ public class Contract {
 		return numberInstallment;
 	}
 	
-	void generateInstallments() {
+	public void generateInstallments() {
 		double quota = value / numberInstallment;
 		Date dateInstallment = dateIn;
-		for (int i = 0; i < numberInstallment; i++) {
+		for (int i = 1; i <= numberInstallment; i++) {
 			Installment aux = new Installment(dateInstallment, paymentService.calculate(quota, i));
 			installments.add(aux);
 			// Add time skip
 		}
+	}
+	
+	@Override
+	public String toString() {
+		
+		String aux = "";
+		for (Installment e : installments) {
+			aux += e.toString() + "\n";
+		}
+		return aux;
 	}
 }

@@ -1,11 +1,11 @@
 package entitie;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Installment {
 	private Date date;
 	private double price;
-	
+
 	public Installment(Date date, double price) {
 		this.date = date;
 		this.price = price;
@@ -18,6 +18,9 @@ public class Installment {
 	public double getPrice() {
 		return price;
 	}
-	
-	// TODO toString installment
+
+	@Override
+	public String toString() {
+		return date.toString() + " - U$" + String.format("%.2f", price);
+	}
 }
