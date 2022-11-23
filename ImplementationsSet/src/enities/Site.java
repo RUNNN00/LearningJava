@@ -5,19 +5,19 @@ import java.util.Set;
 
 public class Site {
 
-	private Set<Access> accessList;
+	private Set<Access> entries;
 
 	public Site() {
-		accessList = new HashSet<Access>();
+		entries = new HashSet<Access>();
 	}
 	
-	public void entry(Access hit) {
+	public void entry(Access entry) {
 		
-		accessList.add(hit);
+		entries.add(entry);
 	}
 	
 	public int accessCount() {
 		
-		return accessList.size();
+		return entries.size();
 	}
 }

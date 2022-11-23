@@ -41,7 +41,7 @@ public class Main {
 			System.out.println(e.getMessage());
 		}
 		
-		System.out.println(site.accessCount());
+		System.out.println("Numero de acessos no site: " + site.accessCount());
 		
 		scanner.close();
 	}
