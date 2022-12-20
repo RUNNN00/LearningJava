@@ -12,7 +12,7 @@ public class Program {
 
 		Scanner scanner = new Scanner(System.in);
 
-		Instructor instructor = new Instructor("Nelio Alves");
+		Instructor instructor = new Instructor("Alex");
 		
 		for (int i = 65; i <= 67; i++) {
 			Course course = new Course(" " + (char)i,	instructor);
