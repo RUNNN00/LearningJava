@@ -14,7 +14,8 @@ public class Program {
 
 	public static void main(String[] args) {
 
-		insertDatasIntoDatabase();
+		//insertDatasIntoDatabase();
+		updatingDatas();
 	}
 
 	public static void insertDatasIntoDatabase() {
@@ -63,5 +64,34 @@ public class Program {
 			DB.closeConnection();
 		}
 
+	}
+
+	public static void updatingDatas() {
+		
+		Connection conn = null;
+		PreparedStatement pst = null;
+		
+		try {
+			conn = DB.getConnection();
+			pst = conn.prepareStatement(
+					"UPDATE seller "
+					+ "SET BaseSalary = BaseSalary + ? "
+					+ "WHERE DepartmentId = ? "
+					+ "LIMIT '1'");
+			
+			pst.setDouble(1, 200.00);
+			pst.setInt(2, 2);
+			
+			int rowsAffected = pst.executeUpdate();
+			System.out.println("Done rows affected " + rowsAffected);
+			
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			DB.closeStatement(pst);
+			DB.closeConnection();
+		}
 	}
 }
