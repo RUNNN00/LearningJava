@@ -9,16 +9,19 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import db.DB;
+import db.DbException;
+import db.DbIntegrityException;
 
 public class Program {
 
 	public static void main(String[] args) {
 
-		//insertDatasIntoDatabase();
-		updatingDatas();
+		//insertDatas();
+		//updateDatas();
+		transactionDatas();
 	}
 
-	public static void insertDatasIntoDatabase() {
+	public static void insertDatas() {
 
 		Connection conn = null;
 		PreparedStatement pst = null;
@@ -66,7 +69,7 @@ public class Program {
 
 	}
 
-	public static void updatingDatas() {
+	public static void updateDatas() {
 		
 		Connection conn = null;
 		PreparedStatement pst = null;
@@ -91,6 +94,72 @@ public class Program {
 		}
 		finally {
 			DB.closeStatement(pst);
+			DB.closeConnection();
+		}
+	}
+
+	public static void deleteDatas() {
+		
+		Connection conn = null;
+		PreparedStatement pst = null;
+		
+		try {
+			conn = DB.getConnection();
+			pst = conn.prepareStatement(
+					"DELETE FROM department "
+					+ "WHERE Id = ?");
+			
+			pst.setInt(1, 2);
+			
+			int rowsAffected = pst.executeUpdate();
+			System.out.println("Rows affected: " + rowsAffected);
+		}
+		catch (SQLException e) {
+			throw new DbIntegrityException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(pst);
+			DB.closeConnection();
+		}
+	}
+	
+	public static void transactionDatas() {
+		
+		Connection conn = null;
+		Statement st = null;
+		
+		try {
+			conn = DB.getConnection();
+			
+			conn.setAutoCommit(false); // comando para não confirmar as operações automaticamente
+			
+			st = conn.createStatement();
+			
+			int rows1 = st.executeUpdate("UPDATE seller SET BaseSalary = 2090 WHERE DepartmentId = 1");
+			
+			// Simulação de erro entre duas operações com o banco de dados
+			//int x = 1;
+			//if (x < 2) throw new SQLException("Fake error");
+			
+			int rows2 = st.executeUpdate("UPDATE seller SET BaseSalary = 3090 WHERE DepartmentId = 2");
+			
+			conn.commit(); // comando para confirmar as operações feitas até esta linha
+			
+			System.out.println("Rows1 affected: " + rows1);
+			System.out.println("Rows2 affected: " + rows2);
+			
+		}
+		catch (SQLException e) {
+			try {
+				conn.rollback(); // comando para desfazer as operações caso tenha ocorrido alguma exceção
+				throw new DbException("Transaction rolled back! Caused by: " + e.getMessage());
+			}
+			catch (SQLException e1) {
+				throw new DbException("Error trying to rollback! Caused by: " + e1.getMessage());
+			}
+		}
+		finally {
+			DB.closeStatement(st);
 			DB.closeConnection();
 		}
 	}
